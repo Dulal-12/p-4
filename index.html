@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input class="form-control" type="text" id="pinAdd">
+                    <button class="generate-btn" onclick="pinGenerateBtn()">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" type="text" id='inputLabel' >
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button"  onclick= "numberPushBtn(this)" >7</div>
+                              <div class="button"  onclick= "numberPushBtn(this)" >8</div>
+                              <div class="button"  onclick= "numberPushBtn(this)" >9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button"  onclick= "numberPushBtn(this)" >4</div>
+                              <div class="button"  onclick= "numberPushBtn(this)" >5</div>
+                              <div class="button"  onclick= "numberPushBtn(this)" >6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button"  onclick= "numberPushBtn(this)" >1</div>
+                              <div class="button"  onclick= "numberPushBtn(this)" >2</div>
+                              <div class="button"  onclick= "numberPushBtn(this)" >3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" onclick= "back()"><</div>
+                                <div class="button" onclick= "numberPushBtn(this)">0</div>
+                                <div class="button" onclick= "numberPushBtn(this)">C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn" id="submitType" onclick="calculation()">Submit</button>
+                                <p class="action-left" id="numberOfTime">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p class="notify " id="notify-1">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify " id ="notify-2">✅ Pin Matched... Secret door is opening for you</p>
+            <p class="notify " id="notify-3">❌ Please Enter valid 4 digit pin</p>
+
+        </div>
+    </div>
+
+
+    <!-- javascript -->
+   <script>
+    //For pin Generate
+        function pinGenerateBtn(){
+           var pinNumber = Math.floor(1000 + Math.random() * 9000);
+           document.getElementById("pinAdd").value = pinNumber;
+
+        //special
+        document.getElementById("notify-2").style.display='none';
+        document.getElementById("notify-1").style.display='none';
+        document.getElementById("notify-3").style.display='none';
+        }
+
+        // for input like calculator
+        var inputLabel = document.getElementById('inputLabel');
+
+        function numberPushBtn(obj){
+            var pushed = obj.innerHTML;
+           
+            if(pushed =='C'){
+               document.getElementById('inputLabel').value='';
+            }
+            else{
+                   if(inputLabel.value ==''){
+                   document.getElementById('inputLabel').value = pushed;
+                    }
+                   else{
+                    document.getElementById('inputLabel').value += pushed;
+            }}}
+
+        // for back button
+        function back() {
+               var value = document.getElementById('inputLabel').value;
+                           document.getElementById('inputLabel').value = value.substr(0, value.length - 1);
+                      }
+
+        //submit calculation
+        function calculation(){
+            let pinNumber = document.getElementById("pinAdd").value.toString();
+            let calNumber = document.getElementById('inputLabel').value;
+            
+            
+                if (pinNumber == calNumber && (pinNumber.length==4 && calNumber.length==4)){
+                document.getElementById("notify-2").style.display='block';
+                 }
+                 else if (pinNumber == calNumber && (pinNumber.length!=4 && calNumber.length!=4)){
+                    document.getElementById("notify-3").style.display='block';
+                 }
+                else{ 
+                   
+                        document.getElementById("notify-1").style.display='block';
+                    // Don't get number
+                    document.getElementById("numberOfTime").innerText = j +' '+'try left';
+                    j = j-1;
+                    if (j==-1){
+                        document.getElementById("submitType").style.display='none';
+
+                    }
+                    
+                    }
+            
+            document.getElementById("pinAdd").value ='';
+            document.getElementById('inputLabel').value ='';
+        }
+        var j=2;
+   </script>
+</body>
+</html>
